@@ -35,11 +35,14 @@ public class Album {
 
     @Column
     @Min(1)
-    private String tracks;
+    private int tracks;
 
     @Column
     @Min(0)
-    private String duration;
+    private double duration;
+
+    @Column(length = 70)
+    private String label;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
