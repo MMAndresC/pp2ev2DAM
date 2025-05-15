@@ -1,0 +1,19 @@
+name: my_music_api-mariadb-dev
+services:
+  mariadb:
+    image: mariadb:11.2.6
+    container_name: music-mariadb-dev
+    restart: always
+    env_file: ./.env
+    volumes:
+      - music_data:/var/lib/mysql
+    ports:                                       
+      - "${MARIADB_PORT}:${MARIADB_DEFAULT_PORT}"
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  music_data:
