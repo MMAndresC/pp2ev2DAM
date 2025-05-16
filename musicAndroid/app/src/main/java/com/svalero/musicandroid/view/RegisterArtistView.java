@@ -50,6 +50,6 @@ public class RegisterArtistView extends AppCompatActivity implements RegisterArt
 
 
     }
-}
+
 
 

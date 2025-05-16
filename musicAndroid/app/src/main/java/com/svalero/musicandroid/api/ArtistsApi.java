@@ -1,5 +1,11 @@
 package com.svalero.musicandroid.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ArtistsApi {
     private static final String URL = "http://172.17.21.31:8080/api(v1/";
     public static ArtistsApiInterface buildInstance() {

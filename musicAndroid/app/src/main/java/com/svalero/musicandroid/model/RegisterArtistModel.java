@@ -5,9 +5,13 @@ import com.svalero.musicandroid.api.ArtistsApiInterface;
 import com.svalero.musicandroid.contract.RegisterArtistContract;
 import com.svalero.musicandroid.domain.Artist;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RegisterArtistModel implements RegisterArtistContract.Model {
     @Override
-    public void registerArtist(Artist artist, onRegisterArtistListener listener) {
+    public void registerArtist(Artist artist, OnRegisterArtistListener listener) {
         ArtistsApiInterface artistsApi = ArtistsApi.buildInstance();
         Call<Artist> callRegisterArtist = artistsApi.addArtist(1, artist);
         callRegisterArtist.enqueue(new Callback<>() {

@@ -5,11 +5,11 @@ import com.svalero.musicandroid.domain.Artist;
 public interface RegisterArtistContract {
 
     interface Model {
-        interface onRegisterArtistListener {
+        interface OnRegisterArtistListener {
             void onRegisterArtistSuccess(Artist registeredArtist);
             void onRegisterArtistError(String message);
         }
-        void registerArtist(Artist artist, onRegisterArtistListener listener);
+        void registerArtist(Artist artist, OnRegisterArtistListener listener);
     }
 
     interface View {

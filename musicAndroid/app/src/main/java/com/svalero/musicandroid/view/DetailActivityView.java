@@ -21,6 +21,6 @@ public class DetailActivityView extends AppCompatActivity {
     }
 
     private void printArtist(long artistId) {
-        ((TextView) findViewById(R.id.artist_id)).setText(String.valueOf(artistId));
+        ((TextView) findViewById(R.id.linearLayout)).setText(String.valueOf(artistId));
     }
 }
