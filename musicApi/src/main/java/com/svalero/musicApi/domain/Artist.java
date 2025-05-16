@@ -37,7 +37,7 @@ public class Artist {
     private String country;
 
     @OneToMany(mappedBy = "artist")
-    //Tiene que coincidir con el valor @JsonManagedReference de la otra tabla relacionada
+    //Has to match the @JsonManagedReference value of the other related table
     @JsonBackReference(value = "artist_albums")
     private List<Album> albums;
 }

@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "845795a9-8e09-4c29-bead-9f79775ab40a",
+		"name": "Music API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "44615570",
+		"_collection_link": "https://mandres-9689600.postman.co/workspace/M-Andres's-Workspace~ac0b8851-919d-4887-853e-f3842a28066f/collection/44615570-845795a9-8e09-4c29-bead-9f79775ab40a?action=share&source=collection_link&creator=44615570"
+	},
+	"item": [
+		{
+			"name": "Artist",
+			"item": [
+				{
+					"name": "Get all artists",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}{{port}}{{version}}/artists"
+					},
+					"response": []
+				},
+				{
+					"name": "Add new artist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Within Temptation\",\r\n    \"image\": null,\r\n    \"country\": \"Denmark\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}{{port}}{{version}}/artists"
+					},
+					"response": []
+				},
+				{
+					"name": "Modify artist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Within Temptation\",\r\n    \"image\": \"new_image.jpg\",\r\n    \"country\": \"Denmark\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}{{port}}{{version}}/artists/4"
+					},
+					"response": []
+				},
+				{
+					"name": "Get artist by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}{{port}}{{version}}/artists/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete artist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}{{port}}{{version}}/artists/4"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Album",
+			"item": [
+				{
+					"name": "Get all albums",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}{{port}}{{version}}/albums"
+					},
+					"response": []
+				},
+				{
+					"name": "Add new album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"title\": \"Berserker\",\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": null,\r\n    \"genre\": \"metal\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}{{port}}{{version}}/artists/2/albums"
+					},
+					"response": []
+				},
+				{
+					"name": "Get album by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}{{port}}{{version}}/albums/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Modify album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"title\": \"Berserker\",\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": \"new_image.jpg\",\r\n    \"genre\": \"metal rock\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"idArtist\": 1 \r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}{{port}}{{version}}/albums/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}{{port}}{{version}}/albums/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();\r",
+									"if (pm.response.code && jsonResponse.token) {\r",
+									"    pm.environment.set('token', jsonResponse.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"demo@example.com\",\r\n  \"password\": 1234\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}{{port}}{{version}}/login"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
