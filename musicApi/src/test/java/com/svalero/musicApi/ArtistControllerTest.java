@@ -189,4 +189,131 @@ public class ArtistControllerTest {
 
         verify(artistService, never()).add(any(ArtistInDto.class));
     }
+
+    //Response HTTP 204 No content
+    @Test
+    void deleteArtist_WhenExistsAndLogged_ShouldReturnOK() throws Exception {
+        mockMvc.perform(delete("/api/v1/artists/1")
+                        .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isNoContent());
+
+        verify(artistService).delete(1);
+    }
+
+    //Response HTTP 401 Unauthorized
+    @Test
+    void deleteArtist_WhenNotLogged_ShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(delete("/api/v1/artists/1"))
+                .andExpect(status().isUnauthorized());
+
+        verify(artistService, never()).delete(1);
+    }
+
+    //Response HTTP 404 Not Found
+    @Test
+    void deleteArtist_WhenNotExistsAndLogged_ShouldReturnNotFound() throws Exception {
+        long id = 79;
+        doThrow(new ArtistNotFoundException()).when(artistService).delete(id);
+        mockMvc.perform(delete("/api/v1/artists/" + id)
+                        .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is(404)))
+                .andExpect(jsonPath("$.message", is("Artist not found")));
+
+        verify(artistService).delete(id);
+    }
+
+    //Response HTTP 200
+    @Test
+    void modifyArtist_WhenExists_ShouldReturnOK() throws Exception {
+        long id = 1;
+        Artist modifiedArtist = new Artist(
+                1, "Roxette", LocalDate.parse("2005-02-15"),
+                false, "new_image.jpg", "Sweden", null
+        );
+
+        when(artistService.modify(eq(id), any(ArtistInDto.class))).thenReturn(modifiedArtist);
+
+        String requestBody = """
+                {
+                    "name": "Roxette",
+                    "image": "new_image.jpg",
+                    "country": "Sweden",
+                    "soloist": false
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/artists/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody)
+                        .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("Roxette")))
+                .andExpect(jsonPath("$.image", is("new_image.jpg")));
+
+        verify(artistService).modify(eq(id), any(ArtistInDto.class));
+    }
+
+    //Response HTTP 404 Not Found
+    @Test
+    void modifyArtist_WhenNotExists_ShouldReturnKO() throws Exception {
+        long id = 79;
+
+        when(artistService.modify(eq(id), any(ArtistInDto.class)))
+                .thenThrow(new ArtistNotFoundException());
+
+        String requestBody = """
+                {
+                    "name": "Roxette",
+                    "image": "new_image.jpg",
+                    "country": "Sweden",
+                    "soloist": false
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/artists/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody)
+                        .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is(404)))
+                .andExpect(jsonPath("$.message", is("Artist not found")));
+
+        verify(artistService).modify(eq(id), any(ArtistInDto.class));
+    }
+
+    //Response HTTP 400 Bad Request
+    @Test
+    void modifyArtist_BadRequest_ShouldReturnKO() throws Exception {
+        long id = 1;
+
+        String invalidRequestBody = """
+                {
+                     "image": "new_image.jpg",
+                     "country": "Sweden",
+                     "soloist": false
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/artists/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequestBody)
+                        .header(HttpHeaders.AUTHORIZATION, token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.errorMessages").exists())
+                .andExpect(jsonPath("$.errorMessages.name").exists());
+
+        verify(artistService, never()).modify(eq(id), any(ArtistInDto.class));
+    }
+
+    //Response HTTP 401 Unauthorized
+    @Test
+    void modifyArtist_WhenNotLogged_ShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(put("/api/v1/artists/1"))
+                .andExpect(status().isUnauthorized());
+
+        verify(artistService, never()).delete(1);
+    }
 }
