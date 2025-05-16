@@ -8,11 +8,13 @@ import com.svalero.musicApi.exception.AlbumNotFoundException;
 import com.svalero.musicApi.exception.ArtistNotFoundException;
 import com.svalero.musicApi.repository.AlbumRepository;
 import com.svalero.musicApi.repository.ArtistRepository;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Data
 @Service
 public class AlbumService {
 
@@ -20,7 +22,7 @@ public class AlbumService {
 
     private final ArtistRepository artistRepository;
 
-    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public AlbumService(AlbumRepository albumRepository, ModelMapper modelMapper, ArtistRepository artistRepository) {
         this.albumRepository = albumRepository;

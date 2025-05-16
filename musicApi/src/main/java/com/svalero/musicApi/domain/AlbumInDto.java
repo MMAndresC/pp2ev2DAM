@@ -1,6 +1,5 @@
 package com.svalero.musicApi.domain;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,6 +29,7 @@ public class AlbumInDto {
     @Min(value = 0)
     private double duration;
 
-    @Column(length = 70)
     private String label;
+
+    private boolean platinum;
 }
