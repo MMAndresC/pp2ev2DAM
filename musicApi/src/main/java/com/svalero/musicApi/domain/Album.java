@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Min;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -43,6 +44,10 @@ public class Album {
 
     @Column(length = 70)
     private String label;
+
+    @Column
+    @ColumnDefault("false")
+    private boolean platinum;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")

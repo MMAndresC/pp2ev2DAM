@@ -17,8 +17,8 @@ public class AlbumModifyDto extends AlbumInDto{
     @NotNull(message = "Artist id required")
     private long idArtist;
 
-    public AlbumModifyDto(long idArtist, String title, LocalDate releaseDate, String front, String genre, int tracks, double duration, String label) {
-        super(title, releaseDate, front, genre, tracks, duration, label);
+    public AlbumModifyDto(long idArtist, String title, LocalDate releaseDate, String front, String genre, int tracks, double duration, String label, boolean platinum) {
+        super(title, releaseDate, front, genre, tracks, duration, label, platinum);
         this.idArtist = idArtist;
     }
 }
