@@ -16,9 +16,9 @@ import retrofit2.Response;
 public class ArtistListModel implements ArtistListContract.Model {
 
     @Override
-    public void loadArtists (OnLoadArtistsListener listener) {
+    public void loadArtists (String token, OnLoadArtistsListener listener) {
         ArtistsApiInterface artistsApi = ArtistsApi.buildInstance();
-        Call<ArrayList<Artist>> getArtistsCall = artistsApi.getArtists();
+        Call<ArrayList<Artist>> getArtistsCall = artistsApi.getArtists(token);
         getArtistsCall.enqueue(new Callback<>() {
 
             @Override

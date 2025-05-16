@@ -15,13 +15,13 @@ public class RegisterArtistPresenter implements RegisterArtistContract.Presenter
     }
 
     @Override
-    public void registerArtist(Artist artist) {
+    public void registerArtist(Artist artist, String token) {
         if (artist.getName().isEmpty()) {
             view.showErrorMessage("The mark field cannot be empty");
             return;
         }
 
-        model.registerArtist(artist, this);
+        model.registerArtist(artist, token,this);
     }
 
     @Override

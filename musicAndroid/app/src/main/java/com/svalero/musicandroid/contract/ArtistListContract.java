@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public interface ArtistListContract {
 
-    void loadArtists();
+    void loadArtists(String token);
 
     interface Model {
         interface OnLoadArtistsListener {
             void onLoadArtistsSuccess(ArrayList<Artist> artistList);
             void onLoadArtistsError(String message);
         }
-        void loadArtists(OnLoadArtistsListener listener);
+        void loadArtists(String token, OnLoadArtistsListener listener);
     }
 
     interface View {
@@ -23,6 +23,6 @@ public interface ArtistListContract {
     }
 
     interface Presenter {
-        void loadArtists();
+        void loadArtists(String token);
     }
 }
