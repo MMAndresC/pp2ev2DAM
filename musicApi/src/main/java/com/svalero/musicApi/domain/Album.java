@@ -46,7 +46,7 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
-    //Evita serialización infinita de JSON, al estar relacionadas team-player entra en bucle
+    //Avoids infinite JSON serialisation, as team-player is related and enters a loop
     @JsonManagedReference(value = "artist_albums")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Artist artist;

@@ -4,23 +4,40 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Component
-//Not use in production
-@Profile("dev")
 public class DatabaseSeeder {
     private final Logger logger = LoggerFactory.getLogger(DatabaseSeeder.class);
+    private final PasswordEncoder passwordEncoder;
+
+    public DatabaseSeeder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Bean
     public CommandLineRunner seedDatabase(JdbcTemplate jdbcTemplate) {
         return args -> {
             String fields = "";
             String values = "";
             // Only when tables are empty
+            //USER
+            int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM user", Integer.class);
+            if (count == 0) {
+                this.logger.info("Seeding user table...");
+                String encodedPassword = passwordEncoder.encode("1234");
+                fields = "INSERT INTO user (email, password, role) VALUES ";
+                values = "('demo@example.com', '" + encodedPassword + "', 'user')";
+                jdbcTemplate.execute(fields  + values);
+                this.logger.info("Seeding completed");
+            }else{
+                this.logger.info("user table already seeded. Skipping...");
+            }
+
             //ARTIST
-            int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM artist", Integer.class);
+            count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM artist", Integer.class);
             if (count == 0) {
                 this.logger.info("Seeding artist table...");
                 fields = "INSERT INTO artist (name, registration_date, is_soloist, country) VALUES ";
