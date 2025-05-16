@@ -5,11 +5,10 @@ import com.svalero.musicApi.exception.PasswordIncorrectException;
 import com.svalero.musicApi.exception.UserNotFoundException;
 import com.svalero.musicApi.repository.UserRepository;
 import com.svalero.musicApi.security.JwtUtil;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Profile("!test")
+
 @Service
 public class LoginService {
 
