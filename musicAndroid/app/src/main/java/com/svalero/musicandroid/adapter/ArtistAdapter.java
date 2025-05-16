@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.svalero.musicandroid.R;
 import com.svalero.musicandroid.domain.Artist;
+import com.svalero.musicandroid.view.DetailActivityView;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
     @NonNull
     @Override
     public ArtistAdapter.ArtistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext());
+        View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.artistsview_item, parent, false);
         return new ArtistHolder(view);
     }

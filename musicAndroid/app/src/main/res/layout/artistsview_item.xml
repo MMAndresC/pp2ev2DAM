@@ -19,8 +19,8 @@
             android:layout_width="143dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@mipmap/disco"
-            tools:srcCompat="@mipmap/disco" />
+            app:srcCompat="@mipmap/ic_launcher_foreground"
+            tools:srcCompat="@mipmap/ic_launcher_foreground" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArtistsApi {
-    private static final String URL = "http://172.17.21.31:8080/api(v1/";
+    private static final String URL = "http://172.17.21.93:8090/api/v1/";
     public static ArtistsApiInterface buildInstance() {
 
         Gson gson = new GsonBuilder()
