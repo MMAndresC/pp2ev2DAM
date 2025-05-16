@@ -6,11 +6,11 @@ import com.svalero.musicApi.exception.ArtistNotFoundException;
 import com.svalero.musicApi.repository.ArtistRepository;
 import com.svalero.musicApi.service.ArtistService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class ArtistServiceTest {
 
     @Mock
@@ -154,5 +153,4 @@ public class ArtistServiceTest {
             artistService.getById(id);
         });
     }
-
 }
