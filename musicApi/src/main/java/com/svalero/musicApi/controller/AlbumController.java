@@ -72,6 +72,14 @@ public class AlbumController {
         return new ResponseEntity<>(modifiedAlbum, HttpStatus.OK);
     }
 
+    @GetMapping("/artists/{idArtist}/albums")
+    public ResponseEntity<List<Album>> getAlbumsByArtistId(@PathVariable long idArtist) throws ArtistNotFoundException {
+        this.logger.info("Listing albums by artist id...");
+        List<Album> albums = this.albumService.getAlbumsByArtistId(idArtist);
+        this.logger.info("End listing albums");
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
+
     //Exceptions
     @ExceptionHandler(AlbumNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleAlbumNotFoundException(AlbumNotFoundException exception) {

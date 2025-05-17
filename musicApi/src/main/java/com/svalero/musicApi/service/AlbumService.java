@@ -66,4 +66,9 @@ public class AlbumService {
         this.albumRepository.save(album);
         return album;
     }
+
+    public List<Album> getAlbumsByArtistId(long idArtist) throws ArtistNotFoundException {
+        Artist artist = this.artistRepository.findById(idArtist).orElseThrow(ArtistNotFoundException::new);
+        return this.albumRepository.findByArtistId(idArtist);
+    }
 }
