@@ -26,7 +26,7 @@ public class RegisterArtistPresenter implements RegisterArtistContract.Presenter
 
     @Override
     public void onRegisterArtistSuccess(Artist registeredArtist) {
-        view.showSuccessMessage("Client correctly registered with the identifier" + registeredArtist.getId());
+        view.showSuccessMessage("Artist correctly registered with the identifier" + registeredArtist.getId());
     }
 
     @Override
