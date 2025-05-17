@@ -53,9 +53,11 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
             country = itemView.findViewById(R.id.item_country);
 
             itemView.setOnClickListener(view -> {
-                long artistId = artistList.get(getAdapterPosition()).getId();
+                Artist artist = artistList.get(getAdapterPosition());
                 Intent intent = new Intent(itemView.getContext(), DetailActivityView.class);
-                intent.putExtra("artisId", artistId);
+                intent.putExtra("artist", artist);
+
+
                     startActivity(itemView.getContext(), intent, null);
             });
         }

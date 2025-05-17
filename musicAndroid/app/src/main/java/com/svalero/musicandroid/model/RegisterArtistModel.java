@@ -11,9 +11,9 @@ import retrofit2.Response;
 
 public class RegisterArtistModel implements RegisterArtistContract.Model {
     @Override
-    public void registerArtist(Artist artist, OnRegisterArtistListener listener) {
+    public void registerArtist(Artist artist, String token, OnRegisterArtistListener listener) {
         ArtistsApiInterface artistsApi = ArtistsApi.buildInstance();
-        Call<Artist> callRegisterArtist = artistsApi.addArtist(1, artist);
+        Call<Artist> callRegisterArtist = artistsApi.addArtist(1, artist, token);
         callRegisterArtist.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Artist> call, Response<Artist> response) {

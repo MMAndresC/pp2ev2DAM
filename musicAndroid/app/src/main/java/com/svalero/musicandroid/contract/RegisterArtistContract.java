@@ -9,7 +9,7 @@ public interface RegisterArtistContract {
             void onRegisterArtistSuccess(Artist registeredArtist);
             void onRegisterArtistError(String message);
         }
-        void registerArtist(Artist artist, OnRegisterArtistListener listener);
+        void registerArtist(Artist artist, String token,OnRegisterArtistListener listener);
     }
 
     interface View {
@@ -18,6 +18,6 @@ public interface RegisterArtistContract {
     }
 
     interface Presenter {
-        void registerArtist(Artist artist);
+        void registerArtist(Artist artist, String token);
     }
 }

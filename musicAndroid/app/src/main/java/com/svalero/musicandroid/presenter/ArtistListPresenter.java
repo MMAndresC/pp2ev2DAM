@@ -17,8 +17,8 @@ public class ArtistListPresenter implements ArtistListContract.Presenter, Artist
     }
 
     @Override
-    public void loadArtists() {
-        model.loadArtists(this);
+    public void loadArtists(String token) {
+        model.loadArtists(token, this);
     }
 
     @Override

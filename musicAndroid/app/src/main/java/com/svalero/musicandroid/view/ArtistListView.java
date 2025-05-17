@@ -14,14 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.svalero.musicandroid.adapter.ArtistAdapter;
 import com.svalero.musicandroid.contract.ArtistListContract;
+import com.svalero.musicandroid.contract.UserLoginContract;
 import com.svalero.musicandroid.domain.Artist;
 
 import com.svalero.musicandroid.R;
+import com.svalero.musicandroid.domain.TokenResponse;
+import com.svalero.musicandroid.domain.User;
 import com.svalero.musicandroid.presenter.ArtistListPresenter;
+import com.svalero.musicandroid.presenter.UserLoginPresenter;
+import com.svalero.musicandroid.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 
-public class ArtistListView extends AppCompatActivity implements ArtistListContract.View{
+public class ArtistListView extends AppCompatActivity implements ArtistListContract.View, UserLoginContract.View {
 
     private ArtistAdapter artistAdapter;
     private ArrayList<Artist> artistList;
@@ -33,7 +38,8 @@ public class ArtistListView extends AppCompatActivity implements ArtistListContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        presenter = new ArtistListPresenter(this);
+        UserLoginContract.Presenter presenterLogin = new UserLoginPresenter(this);
+        presenterLogin.loginUser(new User("demo@example.com", "1234"));
 
         artistList = new ArrayList<>();
 
@@ -43,12 +49,12 @@ public class ArtistListView extends AppCompatActivity implements ArtistListContr
         artistsView.setLayoutManager(linearLayoutManager);
     }
 
-    @Override
+   /* @Override
     protected void onResume() {
         super.onResume();
         artistList.clear();
         presenter.loadArtists();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,6 +74,15 @@ public class ArtistListView extends AppCompatActivity implements ArtistListContr
         this.artistList = artistList;
         artistAdapter = new ArtistAdapter(artistList);
         artistsView.setAdapter(artistAdapter);
+    }
+
+    @Override
+    public void getSessionToken(TokenResponse token) {
+        SharedPreferencesUtil.setCustomSharedPreferences(this, "token", token.getToken());
+        SharedPreferencesUtil.setCustomSharedPreferences(this, "email", "demo@example.com");
+        String completeToken = "Bearer " + token.getToken();
+        presenter = new ArtistListPresenter(this);
+        presenter.loadArtists(completeToken);
     }
 
     @Override
