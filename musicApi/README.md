@@ -17,6 +17,25 @@ mvn test -Dtest="archivo_test.java"
 
 ## Docker
 
+### Producción
+Para crear fichero .jar en la carpeta **/target** para a partir de ahí crear la imagen de Docker:
+~~~  
+mvn clean package -DskipTests 
+~~~  
+- Generar la imagén de la app:
+~~~
+docker build -t music-api .  
+~~~
+- Levantar el contenedor:
+~~~
+docker compose -f docker-compose.prod.yml up -d
+~~~
+
+Para consultar los logs del contenedor:
+~~~
+docker logs music-api
+~~~
+
   ### Desarrollo
  
 - Levantar el contenedor de MariaDb:  
