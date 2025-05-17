@@ -15,8 +15,6 @@ public class ArtistInDto {
     @NotNull(message = "Artist name is a mandatory field")
     private String name;
 
-    private LocalDate registrationDate;
-
     private boolean isSoloist;
 
     private String image;

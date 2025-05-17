@@ -1,0 +1,1704 @@
+{
+	"info": {
+		"_postman_id": "845795a9-8e09-4c29-bead-9f79775ab40a",
+		"name": "Music API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44615570",
+		"_collection_link": "https://mandres-9689600.postman.co/workspace/M-Andres's-Workspace~ac0b8851-919d-4887-853e-f3842a28066f/collection/44615570-845795a9-8e09-4c29-bead-9f79775ab40a?action=share&source=collection_link&creator=44615570"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();\r",
+									"if (pm.response.code && jsonResponse.token) {\r",
+									"    pm.environment.set('token', jsonResponse.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"demo@example.com\",\r\n  \"password\": 1234\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/login",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Artist",
+			"item": [
+				{
+					"name": "Get all artists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson[0].name).to.eql('Roxette');\r",
+									"    pm.expect(responseJson[0].country).to.eql('Sweden');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all artists 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new artist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson.name).to.eql('Within Temptation');\r",
+									"    pm.expect(responseJson.country).to.eql('Denmark');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has type properties valid\", () => {\r",
+									"    pm.expect(responseJson.name).to.be.a('string');\r",
+									"    pm.expect(responseJson.id).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Within Temptation\",\r\n    \"image\": null,\r\n    \"country\": \"Denmark\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new artist 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Bad Request');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has date errorMessages\", () => {\r",
+									"    pm.expect(responseJson.errorMessages).to.have.property('name');\r",
+									"    pm.expect(responseJson.errorMessages.name).to.eql('Artist name is a mandatory field');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": null,\r\n    \"country\": \"Denmark\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new artist 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": null,\r\n    \"country\": \"Denmark\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify artist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson.name).to.eql('Roxette');\r",
+									"    pm.expect(responseJson.country).to.eql('Sweden');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has type properties valid\", () => {\r",
+									"    pm.expect(responseJson.name).to.be.a('string');\r",
+									"    pm.expect(responseJson.id).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Roxette\",\r\n    \"image\": \"new_image.jpg\",\r\n    \"country\": \"Sweden\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify artist 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Bad Request');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has date errorMessages\", () => {\r",
+									"    pm.expect(responseJson.errorMessages).to.have.property('name');\r",
+									"    pm.expect(responseJson.errorMessages.name).to.eql('Artist name is a mandatory field');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": \"new_image.jpg\",\r\n    \"country\": \"Sweden\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify artist 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Roxette\",\r\n    \"image\": \"new_image.jpg\",\r\n    \"country\": \"Sweden\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify artist 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Artist not found');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has errorMessages property\", () => {\r",
+									"    pm.expect(responseJson).to.have.property('errorMessages');\r",
+									"    pm.expect(responseJson.errorMessages).to.be.null;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Roxette\",\r\n    \"image\": \"new_image.jpg\",\r\n    \"country\": \"Sweden\",\r\n    \"soloist\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/79",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"79"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get artist by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson.name).to.eql('Roxette');\r",
+									"    pm.expect(responseJson.country).to.eql('Sweden');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has type properties valid\", () => {\r",
+									"    pm.expect(responseJson.name).to.be.a('string');\r",
+									"    pm.expect(responseJson.id).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get artist by id 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Artist not found');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has errorMessages property\", () => {\r",
+									"    pm.expect(responseJson).to.have.property('errorMessages');\r",
+									"    pm.expect(responseJson.errorMessages).to.be.null;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/79",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"79"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get artist by id 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete artist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/4",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete artist 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/4",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete artist 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Artist not found');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has errorMessages property\", () => {\r",
+									"    pm.expect(responseJson).to.have.property('errorMessages');\r",
+									"    pm.expect(responseJson.errorMessages).to.be.null;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/4",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Album",
+			"item": [
+				{
+					"name": "Get all albums",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson[0].title).to.eql('Joyride');\r",
+									"    pm.expect(responseJson[0].tracks).to.eql(15);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all albums 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new album",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson.title).to.eql('Berserker');\r",
+									"    pm.expect(responseJson.duration).to.eql(51.09);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has type properties valid\", () => {\r",
+									"    pm.expect(responseJson.title).to.be.a('string');\r",
+									"    pm.expect(responseJson.tracks).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"title\": \"Berserker\",\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": null,\r\n    \"genre\": \"metal\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/2/albums",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"2",
+								"albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new album 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Bad Request');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has date errorMessages\", () => {\r",
+									"    pm.expect(responseJson.errorMessages).to.have.property('title');\r",
+									"    pm.expect(responseJson.errorMessages.title).to.eql('Album title is a mandatory field');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": null,\r\n    \"genre\": \"metal\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/2/albums",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"2",
+								"albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new album 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": null,\r\n    \"genre\": \"metal\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/artists/2/albums",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"artists",
+								"2",
+								"albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get album by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson.title).to.eql('Joyride');\r",
+									"    pm.expect(responseJson.tracks).to.eql(15);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has type properties valid\", () => {\r",
+									"    pm.expect(responseJson.title).to.be.a('string');\r",
+									"    pm.expect(responseJson.duration).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get album by id 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/1",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get album by id 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Album not found');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has errorMessages property\", () => {\r",
+									"    pm.expect(responseJson).to.have.property('errorMessages');\r",
+									"    pm.expect(responseJson.errorMessages).to.be.null;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/79",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"79"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify album",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has correct properties\", () => {\r",
+									"    pm.expect(responseJson.title).to.eql('Berserker');\r",
+									"    pm.expect(responseJson.front).to.eql('new_image.jpg');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has type properties valid\", () => {\r",
+									"    pm.expect(responseJson.title).to.be.a('string');\r",
+									"    pm.expect(responseJson.tracks).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"title\": \"Berserker\",\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": \"new_image.jpg\",\r\n    \"genre\": \"metal rock\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false,\r\n    \"idArtist\": 1 \r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/5",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify album 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Bad Request');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has date errorMessages\", () => {\r",
+									"    pm.expect(responseJson.errorMessages).to.have.property('title');\r",
+									"    pm.expect(responseJson.errorMessages.title).to.eql('Album title is a mandatory field');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": \"new_image.jpg\",\r\n    \"genre\": \"metal rock\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false,\r\n    \"idArtist\": 1 \r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/5",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify album 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"title\": \"Berserker\",\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": \"new_image.jpg\",\r\n    \"genre\": \"metal rock\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false,\r\n    \"idArtist\": 1 \r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/5",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify album 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Album not found');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has errorMessages property\", () => {\r",
+									"    pm.expect(responseJson).to.have.property('errorMessages');\r",
+									"    pm.expect(responseJson.errorMessages).to.be.null;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"title\": \"Berserker\",\r\n    \"releaseDate\": \"2017-11-03\",\r\n    \"front\": \"new_image.jpg\",\r\n    \"genre\": \"metal rock\",\r\n    \"tracks\": 12,\r\n    \"duration\": 51.09,\r\n    \"label\": \"Nuclear Blast\",\r\n    \"platinum\": false,\r\n    \"idArtist\": 1 \r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/79",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"79"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete album",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/5",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete album 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"  pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has empty body\", () => {\r",
+									"    pm.expect(pm.response.text().trim()).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Headers not has authorization\", function () {\r",
+									"    pm.expect(pm.response.headers.has('Authorization')).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/5",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete album 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"The response has message error\", () => {\r",
+									"    pm.expect(responseJson.message).to.eql('Album not found');\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response has errorMessages property\", () => {\r",
+									"    pm.expect(responseJson).to.have.property('errorMessages');\r",
+									"    pm.expect(responseJson.errorMessages).to.be.null;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}{{port}}{{version}}/albums/79",
+							"host": [
+								"{{host}}{{port}}{{version}}"
+							],
+							"path": [
+								"albums",
+								"79"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

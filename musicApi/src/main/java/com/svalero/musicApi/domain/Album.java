@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Min;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -44,9 +45,13 @@ public class Album {
     @Column(length = 70)
     private String label;
 
+    @Column
+    @ColumnDefault("false")
+    private boolean platinum;
+
     @ManyToOne
     @JoinColumn(name = "artist_id")
-    //Evita serialización infinita de JSON, al estar relacionadas team-player entra en bucle
+    //Avoids infinite JSON serialisation, as team-player is related and enters a loop
     @JsonManagedReference(value = "artist_albums")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Artist artist;
